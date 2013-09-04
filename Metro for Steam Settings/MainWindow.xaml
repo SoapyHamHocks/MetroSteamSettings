@@ -381,7 +381,7 @@
                             <TextBlock>
                                 Find this application useful? Consider making a small donation.
                             </TextBlock>
-                            <Button Content="PayPal" Margin="0,5" Style="{DynamicResource donateButton}" HorizontalAlignment="Left"/>
+                            <Button Content="PayPal" Margin="0,5" Style="{DynamicResource donateButton}" HorizontalAlignment="Left" Click="openDonateLink"/>
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                             <StackPanel Name="updatesLabel" Visibility="Collapsed" Orientation="Horizontal">

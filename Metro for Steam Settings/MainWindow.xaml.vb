@@ -250,6 +250,10 @@ Class MainWindow
         System.Diagnostics.Process.Start(e.Source.NavigateUri.ToString())
     End Sub
 
+    Private Sub openDonateLink()
+        System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=8Z74B76F79LTJ&lc=US&item_name=MetroSteamSettings&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted")
+    End Sub
+
     Private Sub checkUpdates()
         checkUpdatesButton.IsEnabled = False
         Dim webClient As New WebClient
