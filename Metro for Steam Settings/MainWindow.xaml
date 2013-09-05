@@ -34,9 +34,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid x:Name="Border" Background="#e0e0e0">
+                        <Grid Name="Border" Background="#e0e0e0">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" Margin="0,0,0,1"/>
-                            <Rectangle x:Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
+                            <Rectangle Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -61,9 +61,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid x:Name="Border" Background="#FFC91E">
+                        <Grid Name="Border" Background="#FFC91E">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" Margin="0,0,0,1"/>
-                            <Rectangle x:Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
+                            <Rectangle Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -82,7 +82,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Grid x:Name="Border">
+                        <Grid Name="Border">
                             <ContentPresenter Margin="8,4,8,5"/>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -108,9 +108,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid x:Name="Border" Background="Transparent">
+                        <Grid Name="Border" Background="Transparent">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" Margin="0,0,0,1"/>
-                            <Rectangle x:Name="rect" Height="30px" Width="85px" Fill="#3FFFFFFF" Stroke="#fff" StrokeThickness="2"/>
+                            <Rectangle Name="rect" Height="30px" Width="85px" Fill="#3FFFFFFF" Stroke="#fff" StrokeThickness="2"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -140,9 +140,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Grid x:Name="Border" Background="#e0e0e0">
+                        <Grid Name="Border" Background="#e0e0e0">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1"/>
-                            <Rectangle x:Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
+                            <Rectangle Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -171,8 +171,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
                         <Grid>
-                            <ContentPresenter x:Name="ContentSite"/>
-                            <Rectangle x:Name="rect" Height="50px" Width="50px" Fill="Transparent" Stroke="Transparent" StrokeThickness="4"/>
+                            <ContentPresenter Name="ContentSite"/>
+                            <Rectangle Name="rect" Height="50px" Width="50px" Fill="Transparent" Stroke="Transparent" StrokeThickness="4"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -195,8 +195,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
                         <Grid>
-                            <ContentPresenter x:Name="ContentSite"/>
-                            <Image x:Name="Image" Height="32px" Width="32px"/>
+                            <ContentPresenter Name="ContentSite"/>
+                            <Image Name="Image" Height="32px" Width="32px"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -219,10 +219,9 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
                         <Grid>
-                            <ContentPresenter x:Name="ContentSite"/>
-                            <Rectangle x:Name="rect" Height="108px" Width="96px" Fill="Transparent" Stroke="Transparent" StrokeThickness="4" Margin="-4px"/>
-                            <!--><Rectangle x:Name="innerRect" Height="100px" Width="88px" Fill="Transparent" Stroke="Transparent" StrokeThickness="4"/>-->
-                            <Image x:Name="Image" Height="32px" Width="32px" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                            <ContentPresenter Name="ContentSite"/>
+                            <Rectangle Name="rect" Height="108px" Width="96px" Fill="Transparent" Stroke="Transparent" StrokeThickness="4" Margin="-4px"/>
+                            <Image Name="Image" Height="32px" Width="32px" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -231,7 +230,6 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Image" Property="Source" Value="Resources/check-right.png"/>
                                 <Setter TargetName="rect" Property="Stroke" Value="#6A6D75"/>
-                                <!--<Setter TargetName="innerRect" Property="Stroke" Value="#6A6D75"/>-->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -250,7 +248,7 @@
                     <ControlTemplate TargetType="{x:Type TabItem}">
                         <Grid>
                             <Border Name="Border" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" >
-                                <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Left" ContentSource="Header" RecognizesAccessKey="True" Margin="16,0,0,1"/>
+                                <ContentPresenter Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Left" ContentSource="Header" RecognizesAccessKey="True" Margin="16,0,0,1"/>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -272,58 +270,58 @@
                 <TabItem Style="{DynamicResource navTab}" Header="Accent color">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Accent color"/>
-                        <StackPanel x:Name="accentColorRadios" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-                            <RadioButton x:Name="color0" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                        <StackPanel Name="accentColorRadios" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                            <RadioButton Name="color0" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#DC4FAD"/>
                             </RadioButton>
-                            <RadioButton x:Name="color1" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color1" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#AC193D"/>
                             </RadioButton>
-                            <RadioButton x:Name="color2" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color2" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#D24726"/>
                             </RadioButton>
-                            <RadioButton x:Name="color3" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color3" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#FF8F32"/>
                             </RadioButton>
-                            <RadioButton x:Name="color4" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color4" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#82BA00"/>
                             </RadioButton>
-                            <RadioButton x:Name="color5" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color5" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#008A17"/>
                             </RadioButton>
-                            <RadioButton x:Name="color6" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color6" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#03B3B2"/>
                             </RadioButton>
-                            <RadioButton x:Name="color7" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color7" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#008299"/>
                             </RadioButton>
-                            <RadioButton x:Name="color8" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color8" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#5DB2FF"/>
                             </RadioButton>
-                            <RadioButton x:Name="color9" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color9" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#0072C6"/>
                             </RadioButton>
-                            <RadioButton x:Name="color10" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color10" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#4617B4"/>
                             </RadioButton>
-                            <RadioButton x:Name="color11" GroupName="accentColor" Style="{DynamicResource accentColor}">
+                            <RadioButton Name="color11" GroupName="accentColor" Style="{DynamicResource accentColor}">
                                 <Rectangle Fill="#8C0095"/>
                             </RadioButton>
                         </StackPanel>
-                        <RadioButton Click="openColorPicker" Content="Custom…" x:Name="customColorButton" GroupName="accentColor" Style="{DynamicResource customColorButton}" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                        <RadioButton Click="openColorPicker" Content="Custom…" Name="customColorButton" GroupName="accentColor" Style="{DynamicResource customColorButton}" HorizontalAlignment="Left" Margin="0,10,0,0"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Style="{DynamicResource navTab}" Header="Friends list">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Friends list"/>
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton x:Name="friendslist0" GroupName="friendsList" Style="{DynamicResource friendsList}" IsChecked="True" ToolTip="Fat">
+                            <RadioButton Name="friendslist0" GroupName="friendsList" Style="{DynamicResource friendsList}" IsChecked="True" ToolTip="Fat">
                                 <Image Source="Resources/friendslist0.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="friendslist1" GroupName="friendsList" Style="{DynamicResource friendsList}" ToolTip="Chubby">
+                            <RadioButton Name="friendslist1" GroupName="friendsList" Style="{DynamicResource friendsList}" ToolTip="Chubby">
                                 <Image Source="Resources/friendslist1.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="friendslist2" GroupName="friendsList" Style="{DynamicResource friendsList}" ToolTip="Slim">
+                            <RadioButton Name="friendslist2" GroupName="friendsList" Style="{DynamicResource friendsList}" ToolTip="Slim">
                                 <Image Source="Resources/friendslist2.png"/>
                             </RadioButton>
                         </StackPanel>
@@ -332,7 +330,7 @@
                 <TabItem Style="{DynamicResource navTab}" Header="Font">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Font"/>
-                        <ListView x:Name="fontList" Height="308" BorderBrush="#DEDEDE"/>
+                        <ListView Name="fontList" Height="308" BorderBrush="#DEDEDE"/>
                         <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button Content="Default" Click="resetFont"/>
                         </StackPanel>
@@ -342,28 +340,28 @@
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Decal"/>
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton ToolTip="Default" x:Name="decal_default" GroupName="decalGroup" Style="{DynamicResource decalStyle}" IsChecked="True">
+                            <RadioButton ToolTip="Default" Name="decal_default" GroupName="decalGroup" Style="{DynamicResource decalStyle}" IsChecked="True">
                                 <Image Source="Resources/decal_default.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="decal0" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton Name="decal0" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Image Source="Resources/decal_0.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="decal1" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton Name="decal1" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Image Source="Resources/decal_1.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="decal2" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton Name="decal2" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Image Source="Resources/decal_2.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="decal3" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton Name="decal3" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Image Source="Resources/decal_3.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="decal4" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton Name="decal4" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Image Source="Resources/decal_4.png"/>
                             </RadioButton>
-                            <RadioButton x:Name="decal5" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton Name="decal5" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Image Source="Resources/decal_5.png"/>
                             </RadioButton>
-                            <RadioButton ToolTip="No decal" x:Name="decal6" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
+                            <RadioButton ToolTip="No decal" Name="decal6" GroupName="decalGroup" Style="{DynamicResource decalStyle}">
                                 <Rectangle Fill="#FF101010" />
                             </RadioButton>
                         </StackPanel>
@@ -398,20 +396,20 @@
                 </TabItem>
             </TabControl>
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button x:Name="dlgOKbutton" Content="OK" Margin="0,8" Button.Click="uninit" IsDefault="True"/>
-                <Button Content="Cancel" Margin="8" Button.Click="closeDlg" IsCancel="True"/>
+                <Button Name="dlgOKbutton" Content="OK" Margin="0,8" Click="uninit" IsDefault="True"/>
+                <Button Content="Cancel" Margin="8" Click="closeDlg" IsCancel="True"/>
             </StackPanel>
         </Grid>
-        <Grid x:Name="warningPopup" Background="#3F000000" Visibility="Collapsed">
+        <Grid Name="warningPopup" Background="#3F000000" Visibility="Collapsed">
             <StackPanel Height="200" Background="#334F53">
                 <Label Content="Warning" FontSize="22" Foreground="#fff" Margin="24,12,0,0"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,16,0,0">
-                    <Label x:Name="warningMessage" Content="Make sure you are running from the" FontSize="14" Foreground="#fff"/>
+                    <Label Name="warningMessage" Content="Make sure you are running from the" FontSize="14" Foreground="#fff"/>
                     <Label Content="Skins\Metro for Steam" FontSize="14" Foreground="#fff" FontWeight="Bold"/>
                     <Label Content="folder and try again." FontSize="14" Foreground="#fff"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,64,12,0">
-                    <Button x:Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK" Click="closePopup"/>
+                    <Button Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK" Click="closePopup"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

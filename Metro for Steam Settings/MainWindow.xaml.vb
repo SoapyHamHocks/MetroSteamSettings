@@ -207,9 +207,6 @@ Class MainWindow
             colorR = MyDialog.Color.R.ToString
             colorG = MyDialog.Color.G.ToString
             colorB = MyDialog.Color.B.ToString
-            'customColorButton.Background = New SolidColorBrush(Color.FromRgb(MyDialog.Color.R.ToString, MyDialog.Color.G.ToString, MyDialog.Color.B.ToString))
-
-            'customColorButton.Foreground = New SolidColorBrush(Color.FromRgb(255, 255, 255))
         End If
     End Sub
 
