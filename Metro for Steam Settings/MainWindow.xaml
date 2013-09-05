@@ -402,14 +402,16 @@
         </Grid>
         <Grid Name="warningPopup" Background="#3F000000" Visibility="Collapsed">
             <StackPanel Height="200" Background="#334F53">
-                <Label Content="Warning" FontSize="22" Foreground="#fff" Margin="24,12,0,0"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,16,0,0">
-                    <Label Name="warningMessage" Content="Make sure you are running from the" FontSize="14" Foreground="#fff"/>
-                    <Label Content="Skins\Metro for Steam" FontSize="14" Foreground="#fff" FontWeight="Bold"/>
-                    <Label Content="folder and try again." FontSize="14" Foreground="#fff"/>
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,64,12,0">
-                    <Button Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK" Click="closePopup"/>
+                <StackPanel Margin="24,24,0,0">
+                    <Label Style="{DynamicResource noPaddingnoMargin}" Content="Warning" FontSize="22" Foreground="#fff" Margin="0,0,0,16" />
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Foreground="#fff">
+                        Make sure you are running from the
+                        <TextBlock Foreground="#fff" Padding="5,0" FontWeight="Bold">Skins\Metro for Steam</TextBlock>
+                        folder and try again.
+                    </TextBlock>
+                    <StackPanel HorizontalAlignment="Right" Margin="0,71,12,0">
+                        <Button Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK" Click="closePopup"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>
