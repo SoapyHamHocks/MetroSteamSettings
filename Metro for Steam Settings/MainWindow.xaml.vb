@@ -30,7 +30,7 @@ Class MainWindow
 
             'Colors are in order as they appear in the UI
             Select Case fileColorVal.Value
-                Case "220 79 273"
+                Case "220 79 173"
                     color0.IsChecked = True
                 Case "172 25 61"
                     color1.IsChecked = True
