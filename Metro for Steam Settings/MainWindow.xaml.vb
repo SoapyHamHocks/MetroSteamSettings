@@ -108,7 +108,7 @@ Class MainWindow
     Private Sub uninit()
 
         If color0.IsChecked Then
-            themeColor = "220 79 273"
+            themeColor = "220 79 173"
         ElseIf color1.IsChecked Then
             themeColor = "172 25 61"
         ElseIf color2.IsChecked Then
