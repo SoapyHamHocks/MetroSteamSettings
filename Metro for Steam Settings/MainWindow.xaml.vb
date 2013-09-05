@@ -11,6 +11,7 @@ Class MainWindow
     Dim colorG As String
     Dim colorB As String
     Dim appVersion As String = "2.0.0"
+    Dim lastUsedColor = System.Drawing.Color.FromArgb(69, 181, 197)
 
     Private Sub init()
         'Populate fonts list
@@ -200,13 +201,16 @@ Class MainWindow
     End Sub
 
     Private Sub openColorPicker()
-        Dim MyDialog As New ColorDialog()
-        MyDialog.FullOpen = True
+        Dim colorPicker As New ColorDialog()
+        colorPicker.FullOpen = True
+        colorPicker.Color = lastUsedColor
 
-        If (MyDialog.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-            colorR = MyDialog.Color.R.ToString
-            colorG = MyDialog.Color.G.ToString
-            colorB = MyDialog.Color.B.ToString
+        If (colorPicker.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            colorR = colorPicker.Color.R.ToString
+            colorG = colorPicker.Color.G.ToString
+            colorB = colorPicker.Color.B.ToString
+
+            lastUsedColor = System.Drawing.Color.FromArgb(colorR, colorG, colorB)
         End If
     End Sub
 
