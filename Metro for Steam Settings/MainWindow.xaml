@@ -336,7 +336,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Style="{DynamicResource navTab}" Header="Decal">
+                <TabItem Visibility="Collapsed" Style="{DynamicResource navTab}" Header="Decal">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Decal"/>
                         <StackPanel Orientation="Horizontal">
