@@ -10,7 +10,7 @@ Class MainWindow
     Dim colorR As String
     Dim colorG As String
     Dim colorB As String
-    Dim appVersion As String = "2.0.0"
+    Dim appVersion As String = "2.0.1"
     Dim lastUsedColor = System.Drawing.Color.FromArgb(69, 181, 197)
 
     Private Sub init()
