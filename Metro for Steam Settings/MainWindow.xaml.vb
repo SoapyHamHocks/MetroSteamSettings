@@ -13,13 +13,33 @@ Class MainWindow
     Dim appVersion As String = "2.0.1"
     Dim lastUsedColor = System.Drawing.Color.FromArgb(69, 181, 197)
 
+    Dim steamPath As String = ""
+    Dim skinPath As String = ".\"
+
     Private Sub init()
+
+        If System.IO.File.Exists("custom.styles") = False Then
+            'Check if Steam is installed, if so get the path
+            Try
+                If Environment.Is64BitOperatingSystem Then
+                    steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
+                Else
+                    steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
+                End If
+
+                skinPath = steamPath + "\skins\Metro for Steam\"
+
+            Catch ex As Exception
+                openPopup("Steam not installed or can't read Steam install location.")
+            End Try
+        End If
+
         'Populate fonts list
         For Each font As System.Drawing.FontFamily In System.Drawing.FontFamily.Families
             fontList.Items.Add(font.Name)
         Next
         Try
-            Dim currentFile As New readFile("custom.styles")
+            Dim currentFile As New readFile(skinPath + "custom.styles")
 
             Dim colorPattern As New Regex("\d{1,3}\s\d{1,3}\s\d{1,3}")
             Dim fileColorVal As Match = colorPattern.Match(currentFile.contents)
@@ -79,7 +99,7 @@ Class MainWindow
             End If
 
             'Restore friends list style
-            Dim friendsListStyle As New readFile("Friends/FriendsDialog.res")
+            Dim friendsListStyle As New readFile(skinPath + "\Friends\FriendsDialog.res")
 
             If friendsListStyle.contents.Contains("//fat") Then
                 friendslist0.IsChecked = True
@@ -95,10 +115,19 @@ Class MainWindow
             Catch
                 fontList.SelectedItem = "Arial"
             End Try
+
+            'Restore grid view settings
+            If currentFile.contents.Contains("graphics/metro/icons/grid_uninstalled") Then
+                uninstallIndicator.IsChecked = True
+            End If
+
+            If currentFile.contents.Contains("GameItem_Uninstalled GGPlaceholderBG") And currentFile.contents.Contains("GameItem_Uninstalled GamesGridImage") Then
+                uninstallDim.IsChecked = True
+            End If
+
         Catch ex As Exception
             color9.IsChecked = True
             resetFont()
-
         End Try
 
         appVersionLabel.Content = "Version " + appVersion
@@ -174,28 +203,39 @@ Class MainWindow
             friendsListStyle = "Slim"
         End If
 
-        Dim fileContents As String = """custom.styles""{colors{Focus=""" + themeColor + " 255"" basefont=" + outFont + "}" + "styles{""CSteamRootDialog""{bgcolor=ClientBG render_bg{ 0=""fill( x0, y0, x1, y1, ClientBG )""" + decalStyle + " 98=""fill( x0, y0, x1, y0+40, FrameBorder)"" 99=""fill( x0, y0, x1, y0+39, Header_Dark )""}}}}"
+        Dim _uninstallIndicator As String = ""
+        If uninstallIndicator.IsChecked Then
+            _uninstallIndicator = """GameItem_Uninstalled""{render{0=""image(x1-18,y1-26,x1,y1,graphics/metro/icons/grid_uninstalled)""}}"
+        End If
+
+        Dim _uninstallDim As String = ""
+        If uninstallDim.IsChecked Then
+            _uninstallDim = """GameItem_Uninstalled GGPlaceholderBG""{alpha 89.25} ""GameItem_Uninstalled GamesGridImage""{alpha 89.25}"
+        End If
+
+        Dim fileContents As String = """custom.styles""{colors{Focus=""" + themeColor + " 255"" basefont=" + outFont + "}" + "styles{""CSteamRootDialog""{bgcolor=ClientBG render_bg{ 0=""fill( x0, y0, x1, y1, ClientBG )""" + decalStyle + " 98=""fill( x0, y0, x1, y0+40, FrameBorder)"" 99=""fill( x0, y0, x1, y0+39, Header_Dark )""}}" + _uninstallIndicator + " " + _uninstallDim + "}}"
 
         Try
-            If File.Exists("custom.styles") = True Then
-                Dim file As New StreamWriter("custom.styles")
+            If File.Exists(skinPath + "custom.styles") = True Then
+                Dim file As New StreamWriter(skinPath + "custom.styles")
                 file.Write(fileContents)
                 file.Flush()
                 file.Close()
             Else
-                Dim file As TextWriter = System.IO.File.CreateText("custom.styles")
+                Dim file As TextWriter = System.IO.File.CreateText(skinPath + "custom.styles")
                 file.Write(fileContents)
                 file.Flush()
                 file.Close()
             End If
 
-            File.Copy("Friends/Options/" + friendsListStyle + "/FriendsDialog.res", "Friends/FriendsDialog.res", True)
+            File.Copy(skinPath + "\Friends\Options\" + friendsListStyle + "\FriendsDialog.res", skinPath + "\Friends\FriendsDialog.res", True)
 
             Me.Close()
 
-        Catch ex As Exception
-            'do error handling here
-            openPopup()
+        Catch ex As System.UnauthorizedAccessException
+            openPopup("One or more of the files are set to read-only.")
+        Catch ex As Exception When System.IO.Directory.Exists(skinPath) = False
+            openPopup("Skin is not installed.")
         End Try
 
     End Sub
@@ -218,10 +258,14 @@ Class MainWindow
         Me.Close()
     End Sub
 
-    Private Sub openPopup()
+    Function openPopup(message As String)
         warningPopup.Visibility = Windows.Visibility.Visible
+
+        messageContents.Text = message
+
         popupOKbutton.Focus()
-    End Sub
+        Return False
+    End Function
 
     Private Sub closePopup()
         warningPopup.Visibility = Windows.Visibility.Collapsed

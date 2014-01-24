@@ -55,6 +55,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="MetroCheckbox" TargetType="CheckBox">
+            <Setter Property="Margin" Value="8,0,0,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True" Margin="29,0,0,1"/>
+                            <Grid HorizontalAlignment="Left">
+                                <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Name="rect" Height="25px" Width="25px" Fill="Transparent" Stroke="#FFE0E0E0" StrokeThickness="2"/>
+                                <Image Name="Image" Height="21px" Width="21px" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="Image" Property="Source" Value="Resources/check-small-inverted.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}"/>
         <Style x:Key="donateButton" TargetType="Button">
             <Setter Property="Foreground" Value="#fff"/>
@@ -336,6 +357,16 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
+                <TabItem Style="{DynamicResource navTab}" Header="Grid view">
+                    <StackPanel Style="{DynamicResource contentStackPanel}">
+                        <Label Style="{DynamicResource header}" Content="Grid view"/>
+                        <TextBlock Margin="0,0,0,8">
+                                When a game is not installed:
+                        </TextBlock>
+                        <CheckBox Name="uninstallIndicator" Content="Display an indicator icon" Style="{DynamicResource MetroCheckbox}"/>
+                        <CheckBox Name="uninstallDim" Content="Dim the art" Style="{DynamicResource MetroCheckbox}"/>
+                    </StackPanel>
+                </TabItem>
                 <TabItem Style="{DynamicResource navTab}" Header="Decal">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Decal"/>
@@ -403,11 +434,8 @@
         <Grid Name="warningPopup" Background="#3F000000" Visibility="Collapsed">
             <StackPanel Height="200" Background="#334F53">
                 <StackPanel Margin="24,24,0,0">
-                    <Label Style="{DynamicResource noPaddingnoMargin}" Content="Warning" FontSize="22" Foreground="#fff" Margin="0,0,0,16" />
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Foreground="#fff">
-                        Make sure you are running from the
-                        <TextBlock Foreground="#fff" Padding="5,0" FontWeight="Bold">Skins\Metro for Steam</TextBlock>
-                        folder and try again.
+                    <Label Style="{DynamicResource noPaddingnoMargin}" Content="Error" FontSize="22" Foreground="#fff" Margin="0,0,0,16" />
+                    <TextBlock Name="messageContents" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Foreground="#fff">
                     </TextBlock>
                     <StackPanel HorizontalAlignment="Right" Margin="0,71,12,0">
                         <Button Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK" Click="closePopup"/>
