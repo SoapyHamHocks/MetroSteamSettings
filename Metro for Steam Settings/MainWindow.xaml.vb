@@ -75,6 +75,11 @@ Class MainWindow
                 Case "140 0 149"
                     color11.IsChecked = True
                 Case Else
+                    Dim rgbsplit = fileColorVal.Value.Split(" ")
+                    colorR = rgbsplit(0)
+                    colorG = rgbsplit(1)
+                    colorB = rgbsplit(2)
+                    lastUsedColor = System.Drawing.Color.FromArgb(colorR, colorG, colorB)
                     customColorButton.IsChecked = True
             End Select
 
