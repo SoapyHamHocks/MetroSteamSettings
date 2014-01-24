@@ -15,7 +15,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("Metro for Steam Settings")> 
-<Assembly: AssemblyCopyright("SoapyHamHocks ©  2013")> 
+<Assembly: AssemblyCopyright("SoapyHamHocks ©  2013-2014")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: ComVisible(false)>
 
@@ -55,5 +55,5 @@ Imports System.Windows
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0.0.0")> 
-<Assembly: AssemblyFileVersion("2.0.0.0")> 
+<Assembly: AssemblyVersion("2.1.0.0")> 
+<Assembly: AssemblyFileVersion("2.1.0.0")> 
