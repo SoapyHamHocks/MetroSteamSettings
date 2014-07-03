@@ -10,30 +10,15 @@ Class MainWindow
     Dim colorR As String
     Dim colorG As String
     Dim colorB As String
-    Dim appVersion As String = "2.1.1"
+    Dim appVersion As String = "2.2.0"
     Dim lastUsedColor = System.Drawing.Color.FromArgb(69, 181, 197)
 
     Dim steamPath As String = ""
     Dim skinPath As String = ".\"
 
-    Private Sub init()
+    Dim foundSkins
 
-        If System.IO.File.Exists("custom.styles") = False Then
-            'Check if Steam is installed, if so get the path
-            Try
-                If Environment.Is64BitOperatingSystem Then
-                    steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
-                Else
-                    steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
-                End If
-
-                skinPath = steamPath + "\skins\Metro for Steam\"
-
-            Catch ex As Exception
-                openPopup("Steam not installed or can't read Steam install location.")
-            End Try
-        End If
-
+    Private Sub restoreControls()
         'Populate fonts list
         For Each font As System.Drawing.FontFamily In System.Drawing.FontFamily.Families
             fontList.Items.Add(font.Name)
@@ -80,7 +65,8 @@ Class MainWindow
                     colorG = rgbsplit(1)
                     colorB = rgbsplit(2)
                     lastUsedColor = System.Drawing.Color.FromArgb(colorR, colorG, colorB)
-                    customColorButton.IsChecked = True
+                    customColorDummy.IsChecked = True
+                    updateCustomColor()
             End Select
 
             'Restore decal style
@@ -131,15 +117,97 @@ Class MainWindow
             End If
 
         Catch ex As Exception
-            color9.IsChecked = True
+            color3.IsChecked = True
             resetFont()
         End Try
-
-        appVersionLabel.Content = "Version " + appVersion
-
     End Sub
 
+    Private Sub updateCustomColor()
+        Dim colorBrush = New System.Windows.Media.Color()
+        colorBrush.R = colorR
+        colorBrush.G = colorG
+        colorBrush.B = colorB
+        colorBrush.A = 255
+        'customColorRect.Height = customColorButton.Height
+        'customColorRect.Width = customColorButton.Width
+        customColorRect.Fill = New SolidColorBrush(colorBrush)
+    End Sub
+
+    Private Sub init()
+        appVersionLabel.Text = "Version " + appVersion
+        If System.IO.File.Exists("custom.styles") = False Then
+            'Check if Steam is installed, if so get the path
+            Try
+                If Environment.Is64BitOperatingSystem Then
+                    steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
+                Else
+                    steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
+                End If
+
+                If String.IsNullOrEmpty(steamPath) Then
+                    Throw New Exception("Can't read Steam install location")
+                End If
+
+                foundSkins = New skinList(steamPath)
+
+                If foundSkins.count = 0 Then
+                    Throw New Exception("Skin is not installed. Get the latest copy from www.metroforsteam.com")
+                ElseIf foundSkins.count = 1 Then
+                    skinPath = steamPath + "\skins\" + foundSkins.skinsDirectory(0).ToString + "\"
+                Else
+                    For Each item In foundSkins.skinsLabel
+                        skinListViewbox.Items.Add(item)
+                    Next
+
+                    skinListViewbox.SelectedItem = skinListViewbox.Items.Item(0)
+                    openSkinList()
+                    skinListViewbox.Focus()
+                    Return
+                End If
+            Catch ex As Exception
+                openPopup(ex.Message.ToString, True)
+            End Try
+        End If
+        restoreControls()
+    End Sub
+
+    Function validateFont(basefont As String)
+        Dim semibold_pattern As New Regex(basefont + "\s(Semibold|Medium|Bold)", RegexOptions.IgnoreCase)
+        Dim light_pattern As New Regex(basefont + "\s(Light|Thin)", RegexOptions.IgnoreCase)
+        Dim semilight_pattern As New Regex(basefont + "\s(Semilight|Light)", RegexOptions.IgnoreCase)
+
+        Dim semibold_match As Match
+        Dim light_match As Match
+        Dim semilight_match As Match
+
+        Dim semibold_out = basefont
+        Dim light_out = basefont
+        Dim semilight_out = basefont
+
+        For Each font As System.Drawing.FontFamily In System.Drawing.FontFamily.Families
+            If semibold_pattern.IsMatch(font.Name) Then
+                semibold_match = semibold_pattern.Match(font.Name)
+                semibold_out = semibold_match.Value
+            End If
+
+            If light_pattern.IsMatch(font.Name) Then
+                light_match = light_pattern.Match(font.Name)
+                light_out = light_match.Value
+            End If
+
+            If semilight_pattern.IsMatch(font.Name) Then
+                semilight_match = semilight_pattern.Match(font.Name)
+                semilight_out = semilight_match.Value
+            End If
+        Next
+
+        Return """" + basefont + """ semibold=""" + semibold_out + """ semilight=""" + semilight_out + """ light=""" + light_out + """"
+    End Function
+
     Private Sub uninit()
+        If String.IsNullOrEmpty(steamPath) Then
+            Return
+        End If
 
         If color0.IsChecked Then
             themeColor = "220 79 173"
@@ -165,18 +233,11 @@ Class MainWindow
             themeColor = "70 23 180"
         ElseIf color11.IsChecked Then
             themeColor = "140 0 149"
-        ElseIf customColorButton.IsChecked Then
+        ElseIf customColorDummy.IsChecked Then
             themeColor = colorR + " " + colorG + " " + colorB
         End If
 
-        Dim outFont As String
-        Dim selectedFont = fontList.SelectedItem.ToString()
-
-        If fontList.SelectedItem.ToString = "Segoe UI" Then
-            outFont = """Segoe UI"" semibold=""Segoe UI Semibold"" semilight=""Segoe UI Semilight"" light=""Segoe UI Light"""
-        Else
-            outFont = """" + selectedFont + """ semibold=""" + selectedFont + """ semilight=""" + selectedFont + """ light=""" + selectedFont + """"
-        End If
+        Dim outFont As String = validateFont(fontList.SelectedItem.ToString)
 
         Dim decalStyle As String
 
@@ -219,7 +280,6 @@ Class MainWindow
         End If
 
         Dim fileContents As String = """custom.styles""{colors{Focus=""" + themeColor + " 255"" basefont=" + outFont + "}" + "styles{""CSteamRootDialog""{bgcolor=ClientBG render_bg{ 0=""fill( x0, y0, x1, y1, ClientBG )""" + decalStyle + " 98=""fill( x0, y0, x1, y0+40, FrameBorder)"" 99=""fill( x0, y0, x1, y0+39, Header_Dark )""}}" + _uninstallIndicator + " " + _uninstallDim + "}}"
-
         Try
             If File.Exists(skinPath + "custom.styles") = True Then
                 Dim file As New StreamWriter(skinPath + "custom.styles")
@@ -238,11 +298,18 @@ Class MainWindow
             Me.Close()
 
         Catch ex As System.UnauthorizedAccessException
-            openPopup("One or more of the files are set to read-only.")
-        Catch ex As Exception When System.IO.Directory.Exists(skinPath) = False
-            openPopup("Skin is not installed.")
+            openPopup("One or more of the files are set to read-only.", False)
         End Try
 
+    End Sub
+
+    Private Sub colorUnchecked()
+        Dim colorBrush = New System.Windows.Media.Color()
+        colorBrush.R = 255
+        colorBrush.G = 255
+        colorBrush.B = 255
+        colorBrush.A = 0
+        customColorRect.Fill = New SolidColorBrush(colorBrush)
     End Sub
 
     Private Sub openColorPicker()
@@ -256,6 +323,9 @@ Class MainWindow
             colorB = colorPicker.Color.B.ToString
 
             lastUsedColor = System.Drawing.Color.FromArgb(colorR, colorG, colorB)
+
+            customColorDummy.IsChecked = True
+            updateCustomColor()
         End If
     End Sub
 
@@ -263,18 +333,38 @@ Class MainWindow
         Me.Close()
     End Sub
 
-    Function openPopup(message As String)
+    Private Sub openPopup(message As String, closeWindow As Boolean)
         warningPopup.Visibility = Windows.Visibility.Visible
+        skinListPopup.Visibility = Windows.Visibility.Collapsed
 
         messageContents.Text = message
 
+        If closeWindow Then
+            AddHandler popupOKbutton.Click, AddressOf closeDlg
+        Else
+            AddHandler popupOKbutton.Click, AddressOf closePopup
+        End If
+
         popupOKbutton.Focus()
-        Return False
-    End Function
+    End Sub
+
+    Private Sub openSkinList()
+        contentGrid.Visibility = Windows.Visibility.Hidden
+        warningPopup.Visibility = Windows.Visibility.Collapsed
+        skinListPopup.Visibility = Windows.Visibility.Visible
+    End Sub
 
     Private Sub closePopup()
+        contentGrid.Visibility = Windows.Visibility.Visible
         warningPopup.Visibility = Windows.Visibility.Collapsed
+        skinListPopup.Visibility = Windows.Visibility.Collapsed
         dlgOKbutton.Focus()
+    End Sub
+
+    Private Sub skinListClose()
+        closePopup()
+        skinPath = steamPath + "\skins\" + foundSkins.skinsDirectory(skinListViewbox.SelectedIndex).ToString + "\"
+        restoreControls()
     End Sub
 
     Private Sub resetFont()
@@ -284,17 +374,6 @@ Class MainWindow
             fontList.SelectedItem = "Arial"
         End Try
     End Sub
-
-    Class readFile
-        Public contents As String
-        Public Sub New(_file As String)
-            If File.Exists(_file) Then
-                Dim file As New StreamReader(_file)
-                contents = file.ReadToEnd()
-                file.Close()
-            End If
-        End Sub
-    End Class
 
     Private Sub openLink(sender As Object, e As RoutedEventArgs)
         System.Diagnostics.Process.Start(e.Source.NavigateUri.ToString())

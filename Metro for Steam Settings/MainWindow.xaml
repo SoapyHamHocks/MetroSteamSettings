@@ -4,6 +4,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="MainWindow"
     Title="Settings" Height="500" Width="700" ResizeMode="NoResize" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen" Icon="Resources/SettingsApp.ico" Loaded="init">
     <Window.Resources>
+        <Color x:Key="PopupBackground">#334F53</Color>
+        <SolidColorBrush x:Key="PopupBrush" Color="{StaticResource PopupBackground}"/>
+
+        <Color x:Key="PopupFadeBackground">#3F000000</Color>
+        <SolidColorBrush x:Key="PopupFadeBrush" Color="{StaticResource PopupFadeBackground}"/>
+
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="#fff"/>
+            <Setter Property="Foreground" Value="#808080"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#808080"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
         <Style x:Key="header" TargetType="{x:Type Label}">
             <Setter Property="FontSize" Value="24px"/>
             <Setter Property="Padding" Value="0"/>
@@ -18,12 +31,11 @@
         <Style x:Key="contentStackPanel" TargetType="{x:Type StackPanel}">
             <Setter Property="Margin" Value="12,0"/>
         </Style>
-        <Style x:Key="textBlock" TargetType="{x:Type TextBlock}">
+        <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="#000"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="0"/>
         </Style>
-        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource textBlock}"/>
         <Style x:Key="MetroButton" TargetType="Button">
             <Setter Property="Foreground" Value="#000"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -36,15 +48,13 @@
                     <ControlTemplate TargetType="Button">
                         <Grid Name="Border" Background="#e0e0e0">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" Margin="0,0,0,1"/>
-                            <Rectangle Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter TargetName="Border" Property="Background" Value="#c2c2c2"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
-                                <Setter TargetName="rect" Property="Stroke" Value="transparent"/>
-                                <Setter TargetName="Border" Property="Background" Value="#000"/>
+                                <Setter TargetName="Border" Property="Background" Value="#101010"/>
                                 <Setter Property="Foreground" Value="#fff" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
@@ -61,15 +71,15 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid>
-                            <ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True" Margin="29,0,0,1"/>
                             <Grid HorizontalAlignment="Left">
-                                <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Name="rect" Height="25px" Width="25px" Fill="Transparent" Stroke="#FFE0E0E0" StrokeThickness="2"/>
-                                <Image Name="Image" Height="21px" Width="21px" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Name="rect" Height="24px" Width="24px" Fill="Transparent" Stroke="#FFE0E0E0" StrokeThickness="2"/>
+                                <Image Name="checkMark" Source="Resources\check-small.png" Stretch="None" Height="14" Width="14" Panel.ZIndex="0" Opacity="0"/>
                             </Grid>
+                            <ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True" Margin="29,0,0,1"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="Image" Property="Source" Value="Resources/check-small-inverted.png"/>
+                                <Setter TargetName="checkMark" Property="Opacity" Value="1"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -90,21 +100,54 @@
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter TargetName="Border" Property="Background" Value="#FFD866"/>
                             </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#101010"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="listview" TargetType="ListViewItem">
+        <Style x:Key="listView" TargetType="ListView">
+            <Setter Property="Height" Value="308"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <Border Name="Border" BorderBrush="#dedede" BorderThickness="1">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="listViewInverted" TargetType="ListView">
+            <Setter Property="Height" Value="258"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <Border Name="Border" Background="#fff" BorderThickness="0">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ListViewItem">
             <Setter Property="Foreground" Value="#000"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
                         <Grid Name="Border">
-                            <ContentPresenter Margin="8,4,8,5"/>
+                            <ContentPresenter Margin="6" TextElement.FontFamily="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -118,7 +161,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listview}"/>
         <Style x:Key="popupButton" TargetType="Button">
             <Setter Property="Foreground" Value="#fff"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -142,6 +184,9 @@
                                 <Setter TargetName="Border" Property="Background" Value="#fff"/>
                                 <Setter Property="Foreground" Value="#000" />
                             </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".4"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -151,31 +196,45 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="15px"/>
         </Style>
-        <Style x:Key="customColorButton" TargetType="RadioButton">
+        <Style x:Key="customColorDummy" TargetType="RadioButton">
             <Setter Property="Foreground" Value="#000"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontWeight" Value="Normal"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Width" Value="85"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Width" Value="78"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Grid Name="Border" Background="#e0e0e0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1"/>
-                            <Rectangle Name="rect" Height="30px" Width="85px" Fill="Transparent" Stroke="Transparent" StrokeThickness="2"/>
+                        <Grid Name="Border" Background="Transparent">
+                            <Image Name="check" Source="Resources\circlecheck.png" Opacity="0" Height="36" Width="36"/>
+                            <TextBlock Name="label" Text="Custom…" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="check" Property="Opacity" Value="1"/>
+                                <Setter TargetName="label" Property="Opacity" Value="0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="customColorButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#000"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Name="Border" Background="Transparent">
+                            <Rectangle Name="rect" Height="50" Width="80" Stroke="#dedede" StrokeThickness="2"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="Border" Property="Background" Value="#c2c2c2"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter TargetName="rect" Property="Stroke" Value="transparent"/>
-                                <Setter TargetName="Border" Property="Background" Value="#000"/>
-                                <Setter Property="Foreground" Value="#fff" />
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="rect" Property="Stroke" Value="#0072C6"/>
+                                <Setter TargetName="Border" Property="Background" Value="#19FFFFFF"/>
+                                <Setter TargetName="rect" Property="Stroke" Value="#c2c2c2"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -192,16 +251,31 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
                         <Grid>
-                            <ContentPresenter Name="ContentSite"/>
-                            <Rectangle Name="rect" Height="50px" Width="50px" Fill="Transparent" Stroke="Transparent" StrokeThickness="4"/>
+                            <ContentPresenter/>
+                            <Image Name="check" Source="Resources/circlecheck.png" Opacity="0" Height="36" Width="36"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Opacity" Value=".8"/>
                             </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98"
+                                                        ScaleY="0.98"
+                                                        CenterX="0.5"
+                                                        CenterY="0.5"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
                             <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Opacity" TargetName="check" Value="1"/>
                                 <Setter Property="Opacity" Value="1"/>
-                                <Setter TargetName="rect" Property="Stroke" Value="#0072c6"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform/>
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -217,7 +291,7 @@
                     <ControlTemplate TargetType="{x:Type RadioButton}">
                         <Grid>
                             <ContentPresenter Name="ContentSite"/>
-                            <Image Name="Image" Height="32px" Width="32px"/>
+                            <Image Name="Image" Stretch="None" Opacity="0" Source="Resources/check-small-inverted.png" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,2,0"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -225,7 +299,7 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Opacity" Value="1"/>
-                                <Setter TargetName="Image" Property="Source" Value="Resources/check-right-small.png"/>
+                                <Setter TargetName="Image" Property="Opacity" Value="1"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -286,7 +360,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid Background="#25393D">
+        <Grid Background="#25393D" Name="contentGrid">
             <TabControl Background="#fff" Padding="0" BorderThickness="0" TabStripPlacement="Left" Margin="-2,-2,0,0">
                 <TabItem Style="{DynamicResource navTab}" Header="Accent color">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
@@ -329,7 +403,11 @@
                                 <Rectangle Fill="#8C0095"/>
                             </RadioButton>
                         </StackPanel>
-                        <RadioButton Click="openColorPicker" Content="Custom…" Name="customColorButton" GroupName="accentColor" Style="{DynamicResource customColorButton}" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10">
+                            <RadioButton Focusable="False" Name="customColorDummy" GroupName="accentColor" Style="{StaticResource customColorDummy}" Panel.ZIndex="1" Unchecked="colorUnchecked"/>
+                            <Button Click="openColorPicker" Name="customColorButton" Style="{StaticResource customColorButton}" Panel.ZIndex="2"/>
+                            <Rectangle Name="customColorRect" Fill="Transparent" Panel.ZIndex="0"/>
+                        </Grid>
                     </StackPanel>
                 </TabItem>
                 <TabItem Style="{DynamicResource navTab}" Header="Friends list">
@@ -351,7 +429,7 @@
                 <TabItem Style="{DynamicResource navTab}" Header="Font">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="Font"/>
-                        <ListView Name="fontList" Height="308" BorderBrush="#DEDEDE"/>
+                        <ListView Name="fontList" Style="{StaticResource listView}"/>
                         <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button Content="Default" Click="resetFont"/>
                         </StackPanel>
@@ -401,7 +479,7 @@
                 <TabItem Style="{DynamicResource navTab}" Header="About">
                     <StackPanel Style="{DynamicResource contentStackPanel}">
                         <Label Style="{DynamicResource header}" Content="About"/>
-                        <Label Style="{DynamicResource noPaddingnoMargin}" Name="appVersionLabel"/>
+                        <TextBlock Name="appVersionLabel"/>
                         <TextBlock>
                             Created by
                             <Hyperlink Foreground="#0072C6" NavigateUri="http://soapyhamhocks.deviantart.com" Click="openLink">SoapyHamHocks</Hyperlink>
@@ -419,29 +497,52 @@
                                     <Hyperlink Foreground="#0072C6" NavigateUri="https://github.com/SoapyHamHocks/MetroSteamSettings/releases" Click="openLink">github.com</Hyperlink>
                                 </TextBlock>
                             </StackPanel>
-                            <Label Style="{DynamicResource noPaddingnoMargin}" Visibility="Collapsed" Name="noUpdatesLabel" Content="You are already running the latest version."/>
-                            <Label Style="{DynamicResource noPaddingnoMargin}" Visibility="Collapsed" Name="noConnection" Content="Can't connect to the update server."/>
-                            <Button Name="checkUpdatesButton" Click="checkUpdates" Content="Check for updates" Width="130px"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Visibility="Collapsed" Name="noUpdatesLabel" Text="You are already running the latest version."/>
+                                <TextBlock Visibility="Collapsed" Name="noConnection" Text="Can't connect to the update server."/>
+                                <Button Name="checkUpdatesButton" Click="checkUpdates" Content="Check for updates" Width="130px"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
             </TabControl>
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Name="dlgOKbutton" Content="OK" Margin="0,8" Click="uninit" IsDefault="True"/>
+                <Button Name="dlgOKbutton" Content="OK" Margin="0,8" Click="uninit"/>
                 <Button Content="Cancel" Margin="8" Click="closeDlg" IsCancel="True"/>
             </StackPanel>
         </Grid>
-        <Grid Name="warningPopup" Background="#3F000000" Visibility="Collapsed">
-            <StackPanel Height="200" Background="#334F53">
-                <StackPanel Margin="24,24,0,0">
-                    <Label Style="{DynamicResource noPaddingnoMargin}" Content="Error" FontSize="22" Foreground="#fff" Margin="0,0,0,16" />
-                    <TextBlock Name="messageContents" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Foreground="#fff">
-                    </TextBlock>
-                    <StackPanel HorizontalAlignment="Right" Margin="0,71,12,0">
-                        <Button Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK" Click="closePopup"/>
+        <Grid Name="warningPopup" Background="{StaticResource PopupFadeBrush}" Visibility="Collapsed">
+            <Grid Height="200" Background="{StaticResource PopupBrush}">
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text=":(" FontSize="26" Foreground="#fff" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="1" Name="messageContents" FontSize="14" Foreground="#fff"/>
+                </Grid>
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,24,24">
+                    <Button Name="popupOKbutton" Style="{DynamicResource popupButton}" Content="OK"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Name="skinListPopup" Background="{StaticResource PopupFadeBrush}" Visibility="Collapsed">
+            <Grid VerticalAlignment="Stretch" Background="{StaticResource PopupBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Margin="24,24,24,0">
+                    <TextBlock Text="The following skins have been detected" FontSize="22" Foreground="#fff" Margin="0,0,0,16"/>
+                    <TextBlock Text="Select a skin to continue" FontSize="16" Foreground="#fff" Margin="0,0,0,16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center" Width="600">
+                    <ListView Style="{StaticResource listViewInverted}" Name="skinListViewbox"/>
+                    <StackPanel HorizontalAlignment="Right" Margin="0,24,0,0">
+                        <Button Name="skinListOKButton" Style="{StaticResource popupButton}" Content="Select" Click="skinListClose" IsDefault="True"/>
                     </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
