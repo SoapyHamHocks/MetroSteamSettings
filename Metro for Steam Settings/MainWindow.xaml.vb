@@ -10,7 +10,7 @@ Class MainWindow
     Dim colorR As String
     Dim colorG As String
     Dim colorB As String
-    Dim appVersion As String = "2.2.0"
+    Dim appVersion As String = "2.2.1"
     Dim lastUsedColor = System.Drawing.Color.FromArgb(69, 181, 197)
 
     Dim steamPath As String = ""
@@ -205,7 +205,7 @@ Class MainWindow
     End Function
 
     Private Sub uninit()
-        If String.IsNullOrEmpty(steamPath) Then
+        If String.IsNullOrEmpty(steamPath) And IO.File.Exists("custom.styles") = False Then
             Return
         End If
 
